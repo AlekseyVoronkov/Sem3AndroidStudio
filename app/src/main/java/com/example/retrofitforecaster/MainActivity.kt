@@ -24,11 +24,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         recyclerView = findViewById(R.id.r_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -58,13 +53,14 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     response.body()?.let { weatherAdapter.submitList(it.list) }
                 } else {
-                    // cry? cry.
+                    // Handle error
                 }
             }
 
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
-                // Release toxic gas
+                // Handle failure
             }
         })
     }
 }
+

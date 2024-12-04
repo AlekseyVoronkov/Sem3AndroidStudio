@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,9 +15,9 @@
 
     <ImageView
         android:id="@+id/icon_image"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintStart_toStartOf="@id/temp_text"
         app:layout_constraintBottom_toTopOf="@id/temp_text"/>
 
