@@ -38,6 +38,7 @@ android {
 
 dependencies {
 
+    implementation ("com.jakewharton.timber:timber:4.7.1")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     implementation ("androidx.recyclerview:recyclerview:1.2.1")
