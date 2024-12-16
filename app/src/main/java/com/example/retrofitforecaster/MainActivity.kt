@@ -1,5 +1,6 @@
 package com.example.retrofitforecaster
 
+import WeatherStore
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +18,7 @@ import java.io.Serializable
 class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var weatherAdapter: WeatherAdapter
-    private var weatherData: List<Weather>? = null
+    val weatherStore = WeatherStore()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +32,11 @@ class MainActivity : AppCompatActivity() {
         weatherAdapter = WeatherAdapter()
         recyclerView.adapter = weatherAdapter
 
-        if (savedInstanceState == null) {
+        if (weatherStore.weathers == null) {
             fetchWeatherData()
         } else {
-            weatherData = savedInstanceState.getSerializable("weatherData") as? List<Weather>
-            weatherAdapter.submitList(weatherData)
-            Timber.d("Restored weather data from savedInstanceState")
+            weatherAdapter.submitList(weatherStore.weathers)
+            Timber.d("Restored weather data from WeatherStore")
         }
     }
 
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        weatherData = it.list
+                        weatherStore.weathers = it.list
                         weatherAdapter.submitList(it.list)
                         Timber.d("Response received: ${it.list}")
                     }
@@ -73,16 +73,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (weatherData != null) {
-            outState.putSerializable("weatherData", weatherData as Serializable)
+        if (weatherStore.weathers != null) {
+            outState.putSerializable("weatherData", weatherStore.weathers as Serializable)
             Timber.d("Weather data saved in onSaveInstanceState")
         }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        weatherData = savedInstanceState.getSerializable("weatherData") as? List<Weather>
-        weatherAdapter.submitList(weatherData)
+        weatherStore.weathers = savedInstanceState.getSerializable("weatherData") as? List<Weather>
+        weatherAdapter.submitList(weatherStore.weathers)
         Timber.d("Weather data restored in onRestoreInstanceState")
     }
 }
