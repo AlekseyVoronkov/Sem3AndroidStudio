@@ -1,10 +1,8 @@
 package com.example.retrofitforecaster
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.TextView
@@ -12,10 +10,12 @@ import com.bumptech.glide.Glide
 
 class WeatherAdapter : ListAdapter<Weather, RecyclerView.ViewHolder>(WeatherDiffCallback()) {
 
-    override fun getItemViewType(position: Int): Int {
-        val temperature = getItem(position).main.temp
-        return if (temperature > 0) VIEW_TYPE_HOT else VIEW_TYPE_COLD
-    }
+    var isCelsius: Boolean = true
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutId = if (viewType == VIEW_TYPE_HOT) R.layout.weather_item_hot else R.layout.weather_item_cold
@@ -25,43 +25,36 @@ class WeatherAdapter : ListAdapter<Weather, RecyclerView.ViewHolder>(WeatherDiff
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val weather = getItem(position)
+        val temperature = if (isCelsius) weather.main.temp else (weather.main.temp * 9 / 5) + 32
+        val unit = if (isCelsius) "°C" else "°F"
+
         if (holder is ViewHolderHot) {
-            holder.bind(weather)
-            holder.itemView.setBackgroundColor(Color.parseColor("#fff6f5"))
+            holder.bind(weather, temperature, unit)
         } else if (holder is ViewHolderCold) {
-            holder.bind(weather)
+            holder.bind(weather, temperature, unit)
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        val temperature = getItem(position).main.temp
+        return if (temperature > 0) VIEW_TYPE_HOT else VIEW_TYPE_COLD
+    }
+
     class ViewHolderHot(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val dateTextView: TextView = itemView.findViewById(R.id.date_text)
-        private val tempTextView: TextView = itemView.findViewById(R.id.temp_text)
-        private val iconImageView: ImageView = itemView.findViewById(R.id.icon_image)
-
-        fun bind(weather: Weather) {
-            dateTextView.text = weather.dt_txt
-            tempTextView.text = "${weather.main.temp} °C"
-            itemView.setBackgroundColor(Color.parseColor("#fff6f5"))
-
-            Glide.with(itemView.context)
-                .load("https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png")
-                .into(iconImageView)
+        fun bind(weather: Weather, temperature: Double, unit: String) {
+            itemView.findViewById<TextView>(R.id.date_text).text = weather.dt_txt
+            itemView.findViewById<TextView>(R.id.temp_text).text = "$temperature $unit"
+            val iconUrl = "https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png"
+            Glide.with(itemView.context).load(iconUrl).into(itemView.findViewById(R.id.icon_image))
         }
     }
 
     class ViewHolderCold(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val dateTextView: TextView = itemView.findViewById(R.id.date_text)
-        private val tempTextView: TextView = itemView.findViewById(R.id.temp_text)
-        private val iconImageView: ImageView = itemView.findViewById(R.id.icon_image)
-
-        fun bind(weather: Weather) {
-            dateTextView.text = weather.dt_txt
-            tempTextView.text = "${weather.main.temp} °C"
-            itemView.setBackgroundColor(Color.parseColor("#a0c4ff"))
-
-            Glide.with(itemView.context)
-                .load("https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png")
-                .into(iconImageView)
+        fun bind(weather: Weather, temperature: Double, unit: String) {
+            itemView.findViewById<TextView>(R.id.date_text).text = weather.dt_txt
+            itemView.findViewById<TextView>(R.id.temp_text).text = "$temperature $unit"
+            val iconUrl = "https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png"
+            Glide.with(itemView.context).load(iconUrl).into(itemView.findViewById(R.id.icon_image))
         }
     }
 
