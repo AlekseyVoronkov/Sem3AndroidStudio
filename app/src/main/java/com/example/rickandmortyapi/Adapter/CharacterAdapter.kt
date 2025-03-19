@@ -1,9 +1,13 @@
-package com.example.rickandmortyapi
+package com.example.rickandmortyapi.Adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rickandmortyapi.DataClasses.Character
+import com.example.rickandmortyapi.R
+import com.example.rickandmortyapi.ViewHolders.AlienViewHolder
+import com.example.rickandmortyapi.ViewHolders.HumanViewHolder
+import com.example.rickandmortyapi.ViewHolders.OtherViewHolder
 
 class CharacterAdapter(private val characters: List<Character>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

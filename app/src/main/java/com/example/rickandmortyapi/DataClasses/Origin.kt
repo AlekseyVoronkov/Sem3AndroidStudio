@@ -1,4 +1,4 @@
-package com.example.rickandmortyapi
+package com.example.rickandmortyapi.DataClasses
 
 data class Origin(
     val name: String,
