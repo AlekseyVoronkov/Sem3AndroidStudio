@@ -55,10 +55,10 @@ dependencies {
         androidTestImplementation ("androidx.test.ext:junit:1.1.5")
         androidTestImplementation ("androidx.test:rules:1.3.0")
         androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+        androidTestImplementation ("org.mockito:mockito-android:4.5.1")
 
         testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
         testImplementation ("junit:junit:4.13.2")
-        testImplementation ("org.mockito:mockito-core:4.5.1")
         testImplementation ("androidx.arch.core:core-testing:2.1.0")
 
         implementation(libs.androidx.core.ktx)

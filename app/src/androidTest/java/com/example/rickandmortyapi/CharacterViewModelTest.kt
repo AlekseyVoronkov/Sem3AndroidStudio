@@ -49,7 +49,7 @@ class CharacterViewModelTest {
     }
 
     @Test
-    fun `loadCharacters should update characters LiveData`() = runTest {
+    fun loadCharactersShouldUpdateCharactersLiveData() = runTest {
         // Подготовка данных
         val expectedCharacters = listOf(
             Character(
@@ -83,7 +83,7 @@ class CharacterViewModelTest {
     }
 
     @Test
-    fun `loadCharacters should update errorMessage on failure`() = runTest {
+    fun loadCharactersShouldUpdateErrorMessageOnFailure() = runTest {
         // Симулируем ошибку сети
         `when`(mockApiService.getCharacters()).thenThrow(RuntimeException("Timeout"))
 
