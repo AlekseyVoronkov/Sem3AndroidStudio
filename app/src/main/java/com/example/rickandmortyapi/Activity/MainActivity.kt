@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapi.Adapter.CharacterAdapter
 import com.example.rickandmortyapi.R
 import com.example.rickandmortyapi.ViewModel.CharacterViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: CharacterAdapter
-    private val viewModel: CharacterViewModel by viewModels()
+    val viewModel: CharacterViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +35,11 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.errorMessage.observe(this, Observer { error ->
             error?.let {
-                // Отображение ошибки пользователю (например, через Snackbar)
+                Snackbar.make(
+                    findViewById(R.id.main),
+                    error,
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         })
 

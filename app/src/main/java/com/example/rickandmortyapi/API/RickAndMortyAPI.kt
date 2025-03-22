@@ -1,19 +1,34 @@
 package com.example.rickandmortyapi.API
 
-import com.example.rickandmortyapi.DataClasses.Character
-import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import com.example.rickandmortyapi.DataClasses.Character
 
-interface RickAndMortyApi {
+class RickAndMortyApi {
+    companion object {
+        private const val BASE_URL = "https://rickandmortyapi.com/api/"
+
+        fun create(): RickAndMortyApiService {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            return retrofit.create(RickAndMortyApiService::class.java)
+        }
+    }
+}
+
+interface RickAndMortyApiService {
     @GET("character")
-    fun getCharacters(
+    suspend fun getCharacters(
         @Query("name") name: String? = null,
         @Query("status") status: String? = null,
         @Query("species") species: String? = null,
         @Query("type") type: String? = null,
         @Query("gender") gender: String? = null
-    ): Call<CharacterResponse>
+    ): CharacterResponse
 }
 
 data class CharacterResponse(
